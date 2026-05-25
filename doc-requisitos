@@ -1,0 +1,110 @@
+# Documento de Requisitos do Sistema — Coleta Certa🗑️
+
+**Versão:** 1.0
+**Data:** 25 de Maio de 2026
+
+---
+
+## 1. Requisitos Funcionais (RF)
+
+Os requisitos funcionais descrevem as funcionalidades específicas do sistema, organizadas por módulo.
+
+### 1.1. Módulo de Autenticação e Perfil
+
+| ID | Requisito | Descrição Detalhada | Prioridade |
+| :--- | :--- | :--- | :--- |
+| **RF01** | Cadastro de Usuário | O sistema **deve** permitir que um novo usuário se cadastre fornecendo: nome completo, e-mail, senha e endereço principal (logradouro, número, bairro, cidade, CEP). A foto de perfil deve ser opcional. O sistema **deve** validar a unicidade do e-mail. | Essencial |
+| **RF02** | Login e Autenticação | O sistema **deve** permitir o login com e-mail e senha. A autenticação **deve** ser baseada em tokens (JWT), garantindo segurança nas requisições subsequentes. | Essencial |
+| **RF03** | Recuperação de Senha | O sistema **deve** oferecer a funcionalidade "Esqueci minha senha", enviando um link de redefinição para o e-mail cadastrado, com token de validade temporária. | Essencial |
+| **RF04** | Sessão Persistente | O sistema **deve** manter a sessão do usuário ativa no dispositivo até que ele realize o logout explicitamente, utilizando o armazenamento seguro do token JWT. | Essencial |
+| **RF05** | Gerenciamento de Perfil | O usuário **deve** poder visualizar e editar seus dados cadastrais (exceto e-mail) e foto de perfil. | Importante |
+
+### 1.2. Módulo Mapa Interativo (Visão do Morador)
+
+| ID | Requisito | Descrição Detalhada | Prioridade |
+| :--- | :--- | :--- | :--- |
+| **RF06** | Visualização do Mapa | O sistema **deve** exibir um mapa interativo centralizado na localização atual do usuário (mediante permissão) ou na última região buscada. | Essencial |
+| **RF07** | Exibição de Pontos de Lixo | O sistema **deve** exibir no mapa ícones de alerta representando os pontos de lixo reportados e validados, utilizando a legenda: 🟢 (Lixo no local aguardando coleta) e 🔵 (Coleta pelo caminhão confirmada no local). | Essencial |
+| **RF08** | Status de Coleta Concluída | Após a coleta, o sistema **deve** alterar o status do ponto no mapa para "Coleta Concluída" (⚫), removendo-o ou alterando seu ícone após um período definido. | Essencial |
+| **RF09** | Visualização de Rotas e Horários | O usuário **deve** poder pesquisar um endereço ou clicar em uma rua no mapa para visualizar a agenda de coleta (dias da semana e horário previsto) para aquele local específico. | Importante |
+
+### 1.3. Módulo de Registro de Lixo pelo Morador
+
+| ID | Requisito | Descrição Detalhada | Prioridade |
+| :--- | :--- | :--- | :--- |
+| **RF10** | Iniciar Registro de Lixo | O sistema **deve** oferecer um botão de ação principal ("Marcar lixo no local") na interface do mapa. | Essencial |
+| **RF11** | Captura de Evidências | Ao iniciar o registro, o sistema **deve** solicitar obrigatoriamente uma foto do lixo (via câmera ou galeria). | Essencial |
+| **RF12** | Captura de Localização | O sistema **deve** capturar automaticamente a localização (coordenadas GPS) do dispositivo no momento do registro. O usuário **pode** ajustá-la manualmente no mapa se a precisão estiver baixa. | Essencial |
+| **RF13** | Informações Complementares | O sistema **deve** permitir que o usuário adicione, opcionalmente, uma descrição, o tipo de lixo (ex: doméstico, reciclável, entulho) e a quantidade aproximada. | Importante |
+| **RF14** | Envio para Validação | O registro **deve** ser enviado para um módulo de validação e não aparecerá publicamente no mapa até ser aprovado. O usuário receberá uma confirmação de que o envio foi realizado. | Essencial |
+
+### 1.4. Módulo de Notificações
+
+| ID | Requisito | Descrição Detalhada | Prioridade |
+| :--- | :--- | :--- | :--- |
+| **RF15** | Notificação de Lembrete | O sistema **deve** enviar uma notificação push para os moradores de uma região na véspera ou no dia da coleta, ex: "O caminhão passará amanhã". | Essencial |
+| **RF16** | Notificação de Início de Rota | O sistema **pode** enviar uma notificação quando a coleta for iniciada em uma região ou rota específica. | Desejável |
+| **RF17** | Notificação de Alteração | O sistema **deve** notificar o usuário sobre mudanças na programação da coleta em seu endereço cadastrado (ex: feriado, alteração de rota). | Importante |
+| **RF18** | Notificação de Ponto Coletado | O sistema **deve** notificar o usuário que realizou um registro de lixo quando o status do seu ponto for alterado para "Coleta Concluída". | Importante |
+| **RF19** | Notificação de Validação | O sistema **deve** notificar o usuário se o seu registro de lixo foi aprovado ou rejeitado pela validação. | Essencial |
+
+### 1.5. Módulo de Validação de Registros
+
+| ID | Requisito | Descrição Detalhada | Prioridade |
+| :--- | :--- | :--- | :--- |
+| **RF20** | Fila de Validação | O sistema **deve** fornecer um painel administrativo onde operadores possam visualizar uma fila de registros de lixo pendentes de validação. | Essencial |
+| **RF21** | Aprovação/Rejeição Manual | O operador **deve** poder visualizar a foto e localização de cada registro e tomar uma decisão: "Aprovar" ou "Rejeitar" (com justificativa opcional). | Essencial |
+| **RF22** | Prevenção de Spam | O sistema **deve** implementar regras para limitar a quantidade de registros por usuário em um curto período e sinalizar potenciais abusos para o operador. | Importante |
+
+### 1.6. Módulo de Inteligência Operacional (Painel da Prefeitura/Empresa)
+
+| ID | Requisito | Descrição Detalhada | Prioridade |
+| :--- | :--- | :--- | :--- |
+| **RF23** | Dashboard Analítico | O sistema **deve** prover um dashboard com gráficos e indicadores-chave (KPIs): volume de registros por dia/semana, taxa de conclusão de coleta, tempo médio para coleta. | Essencial |
+| **RF24** | Mapa de Calor | O sistema **deve** gerar um mapa de calor dinâmico, baseado nos registros de lixo, para identificar visualmente as regiões de maior demanda. | Essencial |
+| **RF25** | Identificação de Regiões Críticas | O sistema **deve** ranquear bairros ou zonas por criticidade, com base no volume e recorrência de registros de lixo. | Essencial |
+| **RF26** | Relatórios de Histórico | O sistema **deve** gerar relatórios exportáveis (PDF/CSV) do histórico operacional, permitindo filtrar por período e região. | Importante |
+
+---
+
+## 2. Requisitos Não Funcionais (RNF)
+
+Os requisitos não funcionais definem os atributos de qualidade e as restrições do sistema.
+
+### 2.1. Usabilidade e Acessibilidade
+
+| ID | Requisito | Descrição | Critério de Aceitação |
+| :--- | :--- | :--- | :--- |
+| **RNF01** | Interface Intuitiva | O aplicativo móvel **deve** ser de fácil uso, com uma interface limpa e fluxos de navegação claros, permitindo que um novo usuário consiga registrar um ponto de lixo em menos de 1 minuto. | Teste de usabilidade com usuários representativos. |
+| **RNF02** | Acessibilidade | A interface **deve** seguir diretrizes de acessibilidade (ex: WCAG 2.1 nível AA), incluindo contraste adequado, textos alternativos para imagens e compatibilidade com leitores de tela. | Auditoria de acessibilidade. |
+
+### 2.2. Desempenho e Confiabilidade
+
+| ID | Requisito | Descrição | Critério de Aceitação |
+| :--- | :--- | :--- | :--- |
+| **RNF03** | Tempo de Resposta | As principais interações do usuário (login, carregamento do mapa, envio de registro) **devem** ter um tempo de resposta inferior a 2 segundos em condições normais de rede. | Testes de carga e performance. |
+| **RNF04** | Atualização em Tempo Real | O mapa e o status dos pontos de lixo **devem** refletir as alterações (novos registros validados, conclusão de coleta) em tempo real, utilizando WebSockets, sem necessidade de refresh manual. | Atraso máximo de 5 segundos entre a ação e a atualização na interface. |
+| **RNF05** | Alta Disponibilidade | O sistema como um todo **deve** ter uma disponibilidade de 99.5% (uptime), excluindo janelas de manutenção programada. | Monitoramento de uptime do servidor. |
+
+### 2.3. Escalabilidade e Compatibilidade
+
+| ID | Requisito | Descrição | Critério de Aceitação |
+| :--- | :--- | :--- | :--- |
+| **RNF06** | Escalabilidade Multi-Cidade | A arquitetura do sistema **deve** ser projetada para suportar a expansão para múltiplas cidades, isolando dados e rotas por município. | O sistema aceita o cadastro de uma nova cidade e suas rotas sem necessidade de reestruturação do banco. |
+| **RNF07** | Compatibilidade Mobile | O aplicativo **deve** ser compatível com as duas últimas versões principais do Android e iOS. | Testes de compatibilidade em dispositivos e sistemas operacionais alvo. |
+
+### 2.4. Segurança e Privacidade
+
+| ID | Requisito | Descrição | Critério de Aceitação |
+| :--- | :--- | :--- | :--- |
+| **RNF08** | Proteção de Dados Pessoais | O sistema **deve** armazenar dados pessoais (nome, e-mail, endereço) de forma segura e criptografada, em conformidade com a LGPD. | Criptografia de dados sensíveis em repouso e em trânsito. |
+| **RNF09** | Segurança na Comunicação | Toda a comunicação entre o aplicativo e o servidor **deve** ser feita através de HTTPS. | Testes de segurança para verificar ausência de tráfego em texto plano. |
+| **RNF10** | Autorização | O painel administrativo e o dashboard de inteligência operacional **devem** ser acessíveis apenas por perfis de usuário autorizados (ex: gestor da prefeitura), com sistema de controle de acesso baseado em funções (RBAC). | Tentativa de acesso sem token de administrador é redirecionada para a tela de login. |
+
+### 2.5. Operacionais e de Infraestrutura
+
+| ID | Requisito | Descrição | Critério de Aceitação |
+| :--- | :--- | :--- | :--- |
+| **RNF11** | Otimização de Recursos | O aplicativo móvel **deve** ser otimizado para baixo consumo de dados móveis e bateria. Imagens **devem** ser comprimidas antes do upload. | O consumo de dados para uso normal do mapa não deve exceder 10MB/hora. |
+| **RNF12** | Funcionamento Offline Parcial | O aplicativo **deve** exibir a última agenda de coleta e dados do mapa carregados, mesmo sem conexão, informando ao usuário que os dados podem estar desatualizados. | Desligar a internet do dispositivo e verificar se as informações estáticas do último acesso são exibidas. |
+| **RNF13** | Registro de Logs | O sistema **deve** gerar logs de todos os eventos críticos (falhas de autenticação, erros de upload, ações no painel admin) para auditoria e depuração. | Logs estruturados e pesquisáveis são armazenados. |
