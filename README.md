@@ -168,7 +168,6 @@ O sistema fornecerá um painel inteligente para prefeituras e empresas de coleta
 
 * Regiões com maior volume de lixo.
 * Ruas prioritárias.
-* Rotas otimizadas.
 * Status das coletas.
 * Volume de registros por bairro.
 * Regiões críticas.
@@ -214,7 +213,6 @@ O aplicativo poderá gerar informações importantes como:
 * Integração entre moradores e coleta urbana.
 * Inteligência operacional para prefeituras.
 * Validação com foto.
-* Rotas otimizadas.
 * Redução de custos operacionais.
 * Redução de lixo acumulado.
 * Melhor comunicação com moradores.
